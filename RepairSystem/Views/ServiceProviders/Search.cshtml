@@ -1,0 +1,124 @@
+﻿
+
+@model RepairSystem.Models.ServiceProvider
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+
+
+@using (Html.BeginForm("Search", "ServiceProviders"))
+{
+    <div class="form-horizontal">
+        <h4>ServiceProvider</h4>
+        <hr />
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CountryId", null, htmlAttributes: new { @class = "form-control"  ,@onchange = "loadCities();" })
+                @*@Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control", @onchange = "loadZip();" })
+                @*@Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ZipId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ZipId", null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.ValidationMessageFor(model => model.ZipId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+
+
+    </div>
+}
+
+
+
+<script type="text/javascript">
+
+
+
+    function loadCities() {
+        var countryId = $("#CountryId").val();
+        $.ajax({
+
+            url: '/ServiceProviders/GetCities',
+            type: 'GET',
+            data: {
+                countryId: countryId
+            },
+            success: function (datas) {
+                $("#CityId").empty();
+                console.log(datas);
+                $.each(datas, function (key, entry) {
+                    $("#CityId").append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (request, error) {
+
+            }
+        });
+
+        loadZip();
+    }
+
+
+    function loadZip() {
+        var cityId = $("#CityId").val();
+        $.ajax({
+
+            url: '/ServiceProviders/GetZips',
+            type: 'GET',
+            data: {
+                cityId: cityId
+            },
+            success: function (datas) {
+                $("#ZipId").empty();
+                console.log(datas);
+                $.each(datas, function (key, entry) {
+                    $("#ZipId").append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (request, error) {
+
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        load();
+
+    });
+
+    function load() {
+        loadCities();
+        loadZip();
+    }
+
+
+</script>

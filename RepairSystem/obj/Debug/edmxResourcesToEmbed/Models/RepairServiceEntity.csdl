@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RepairSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ServiceProviders" Relationship="Self.Fk_ServiceProvider_CategoryId" FromRole="Category" ToRole="ServiceProvider" />
+  </EntityType>
+  <EntityType Name="CityZipCode">
+    <Key>
+      <PropertyRef Name="ZipId" />
+    </Key>
+    <Property Name="ZipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="ZipNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CountryCity" Relationship="Self.Fk_CityZipCodes_CityId" FromRole="CityZipCodes" ToRole="CountryCities" />
+    <NavigationProperty Name="Locations" Relationship="RepairSystemModel.Fk_Location_ZipId" FromRole="CityZipCode" ToRole="Location" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CountryCities" Relationship="Self.Fk_CountryCities_CountryId" FromRole="Country" ToRole="CountryCities" />
+    <NavigationProperty Name="Locations" Relationship="RepairSystemModel.Fk_Location_ContryId" FromRole="Country" ToRole="Location" />
+  </EntityType>
+  <EntityType Name="CountryCity">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CityZipCodes" Relationship="Self.Fk_CityZipCodes_CityId" FromRole="CountryCities" ToRole="CityZipCodes" />
+    <NavigationProperty Name="Country" Relationship="Self.Fk_CountryCities_CountryId" FromRole="CountryCities" ToRole="Country" />
+    <NavigationProperty Name="Locations" Relationship="RepairSystemModel.Fk_Location_CityId" FromRole="CountryCity" ToRole="Location" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="LocationId" />
+    </Key>
+    <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="ServiceProviders" Relationship="Self.Fk_ServiceProvider_LocationId" FromRole="Location" ToRole="ServiceProvider" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="ZipId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <NavigationProperty Name="CityZipCode" Relationship="RepairSystemModel.Fk_Location_ZipId" FromRole="Location" ToRole="CityZipCode" />
+    <NavigationProperty Name="Country1" Relationship="RepairSystemModel.Fk_Location_ContryId" FromRole="Location" ToRole="Country" />
+    <NavigationProperty Name="CountryCity" Relationship="RepairSystemModel.Fk_Location_CityId" FromRole="Location" ToRole="CountryCity" />
+  </EntityType>
+  <EntityType Name="ServiceProvider">
+    <Key>
+      <PropertyRef Name="ServiceProviderId" />
+    </Key>
+    <Property Name="ServiceProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.Fk_ServiceProvider_CategoryId" FromRole="ServiceProvider" ToRole="Category" />
+    <NavigationProperty Name="Location" Relationship="Self.Fk_ServiceProvider_LocationId" FromRole="ServiceProvider" ToRole="Location" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="Fk_ServiceProvider_CategoryId">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_CityZipCodes_CityId">
+    <End Role="CountryCities" Type="Self.CountryCity" Multiplicity="1" />
+    <End Role="CityZipCodes" Type="Self.CityZipCode" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountryCities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="CityZipCodes">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_CountryCities_CountryId">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="CountryCities" Type="Self.CountryCity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="CountryCities">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_ServiceProvider_LocationId">
+    <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RepairSystemEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="CityZipCodes" EntityType="Self.CityZipCode" />
+    <EntitySet Name="Countries" EntityType="Self.Country" />
+    <EntitySet Name="CountryCities" EntityType="Self.CountryCity" />
+    <EntitySet Name="Locations" EntityType="Self.Location" />
+    <EntitySet Name="ServiceProviders" EntityType="Self.ServiceProvider" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="Fk_ServiceProvider_CategoryId" Association="Self.Fk_ServiceProvider_CategoryId">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_CityZipCodes_CityId" Association="Self.Fk_CityZipCodes_CityId">
+      <End Role="CountryCities" EntitySet="CountryCities" />
+      <End Role="CityZipCodes" EntitySet="CityZipCodes" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_CountryCities_CountryId" Association="Self.Fk_CountryCities_CountryId">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="CountryCities" EntitySet="CountryCities" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_ServiceProvider_LocationId" Association="Self.Fk_ServiceProvider_LocationId">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_Location_ZipId" Association="RepairSystemModel.Fk_Location_ZipId">
+      <End Role="CityZipCode" EntitySet="CityZipCodes" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_Location_ContryId" Association="RepairSystemModel.Fk_Location_ContryId">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_Location_CityId" Association="RepairSystemModel.Fk_Location_CityId">
+      <End Role="CountryCity" EntitySet="CountryCities" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="Fk_Location_ZipId">
+    <End Type="RepairSystemModel.CityZipCode" Role="CityZipCode" Multiplicity="0..1" />
+    <End Type="RepairSystemModel.Location" Role="Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CityZipCode">
+        <PropertyRef Name="ZipId" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="ZipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_Location_ContryId">
+    <End Type="RepairSystemModel.Country" Role="Country" Multiplicity="0..1" />
+    <End Type="RepairSystemModel.Location" Role="Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_Location_CityId">
+    <End Type="RepairSystemModel.CountryCity" Role="CountryCity" Multiplicity="0..1" />
+    <End Type="RepairSystemModel.Location" Role="Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountryCity">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,225 @@
+﻿@model RepairSystem.Models.ServiceProvider
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal" onload="load();">
+        <h4>ServiceProvider</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MiddleName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, "CategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CountryId, "CountryId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CountryId", null, htmlAttributes: new { @class = "form-control",   @onchange = "loadCities();" })
+                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CityId, "CityId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control"  ,@onchange = "loadZip();" })
+                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ZipId, "ZipId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ZipId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZipId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="return validate();"/>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<script type="text/javascript">
+   
+
+
+    function validate()
+    {
+        var error = "";
+        if($("#FirstName").val()=="")
+        {
+            error = error + "FirstName is Required \n ";
+        }
+        if ($("#LastName").val() == "") {
+            error = error + "LastName is Required \n ";
+        }
+        if ($("#Email").val() == "") {
+            error = error + "Email is Required \n ";
+        }
+        if ($("#Price").val() == "") {
+            error = error + "Price is Required \n ";
+        }
+        if ($("#CategoryId").val() == "") {
+            error = error + "Category is Required \n ";
+        }
+        if ($("#Location").val() == "") {
+            error = error + "Location is Required \n ";
+        }
+        if ($("#CountryId").val() == "") {
+            error = error + "Country is Required \n ";
+        }
+        if ($("#CityId").val() == "") {
+            error = error + "city is Required \n ";
+        }
+        if ($("#ZipId").val() == "") {
+            error = error + "zip code is Required \n ";
+        }
+
+        if(error.length>0)
+        {
+            alert(error);
+            return false;
+        }
+        return true;
+
+
+    }
+
+  
+
+   
+
+    function loadCities()
+    {
+        var countryId = $("#CountryId").val();
+        $.ajax({
+
+            url: '/ServiceProviders/GetCities',
+            type: 'GET',
+            data: {
+                countryId:countryId
+            },
+            success: function (datas) {
+                $("#CityId").empty();
+                console.log(datas);
+                $.each(datas, function (key, entry) {
+                    $("#CityId").append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (request, error) {
+              
+            }
+        });
+
+        loadZip();
+    }
+
+
+    function loadZip() {
+        var cityId = $("#CityId").val();
+        $.ajax({
+
+            url: '/ServiceProviders/GetZips',
+            type: 'GET',
+            data: {
+                cityId: cityId
+            },
+            success: function (datas) {
+                $("#ZipId").empty();
+                console.log(datas);
+                $.each(datas, function (key, entry) {
+                    $("#ZipId").append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (request, error) {
+
+            }
+        });
+    }
+
+   
+    $(document).ready(function () {
+        load();
+
+    });
+
+    function load()
+    {
+        loadCities();
+        loadZip();
+    }
+</script>

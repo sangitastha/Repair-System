@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RepairSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CityZipCodes">
+    <Key>
+      <PropertyRef Name="ZipId" />
+    </Key>
+    <Property Name="ZipId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="ZipNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CountryCities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CountryId" Type="int" Nullable="false" />
+    <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ServiceProvider">
+    <Key>
+      <PropertyRef Name="ServiceProviderId" />
+    </Key>
+    <Property Name="ServiceProviderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="ContactNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="Location" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="ZipId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="Fk_CityZipCodes_CityId">
+    <End Role="CountryCities" Type="Self.CountryCities" Multiplicity="1" />
+    <End Role="CityZipCodes" Type="Self.CityZipCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountryCities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="CityZipCodes">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_CountryCities_CountryId">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="CountryCities" Type="Self.CountryCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="CountryCities">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_ServiceProvider_CategoryId">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_ServiceProvider_CityId">
+    <End Role="CountryCities" Type="Self.CountryCities" Multiplicity="1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountryCities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_ServiceProvider_CountryId">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Fk_ServiceProvider_ZipId">
+    <End Role="CityZipCodes" Type="Self.CityZipCodes" Multiplicity="1" />
+    <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CityZipCodes">
+        <PropertyRef Name="ZipId" />
+      </Principal>
+      <Dependent Role="ServiceProvider">
+        <PropertyRef Name="ZipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RepairSystemModelStoreContainer">
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CityZipCodes" EntityType="Self.CityZipCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CountryCities" EntityType="Self.CountryCities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ServiceProvider" EntityType="Self.ServiceProvider" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="Fk_CityZipCodes_CityId" Association="Self.Fk_CityZipCodes_CityId">
+      <End Role="CountryCities" EntitySet="CountryCities" />
+      <End Role="CityZipCodes" EntitySet="CityZipCodes" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_CountryCities_CountryId" Association="Self.Fk_CountryCities_CountryId">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="CountryCities" EntitySet="CountryCities" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_ServiceProvider_CategoryId" Association="Self.Fk_ServiceProvider_CategoryId">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_ServiceProvider_CityId" Association="Self.Fk_ServiceProvider_CityId">
+      <End Role="CountryCities" EntitySet="CountryCities" />
+      <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_ServiceProvider_CountryId" Association="Self.Fk_ServiceProvider_CountryId">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+    </AssociationSet>
+    <AssociationSet Name="Fk_ServiceProvider_ZipId" Association="Self.Fk_ServiceProvider_ZipId">
+      <End Role="CityZipCodes" EntitySet="CityZipCodes" />
+      <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

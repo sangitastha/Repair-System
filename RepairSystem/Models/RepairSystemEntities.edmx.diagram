@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2f60ca636e744f09936fb9e55460a055" Name="Diagram1">
+        <EntityTypeShape EntityType="RepairSystemModel.Category" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="RepairSystemModel.CityZipCode" Width="1.5" PointX="5.25" PointY="3.5" />
+        <EntityTypeShape EntityType="RepairSystemModel.Country" Width="1.5" PointX="0.75" PointY="3.625" />
+        <EntityTypeShape EntityType="RepairSystemModel.CountryCity" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="RepairSystemModel.ServiceProvider" Width="1.5" PointX="7.5" PointY="2.5" />
+        <EntityTypeShape EntityType="RepairSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="7.25" />
+        <AssociationConnector Association="RepairSystemModel.Fk_ServiceProvider_CategoryId" />
+        <AssociationConnector Association="RepairSystemModel.Fk_CityZipCodes_CityId" />
+        <AssociationConnector Association="RepairSystemModel.Fk_ServiceProvider_ZipId" />
+        <AssociationConnector Association="RepairSystemModel.Fk_CountryCities_CountryId" />
+        <AssociationConnector Association="RepairSystemModel.Fk_ServiceProvider_CountryId" />
+        <AssociationConnector Association="RepairSystemModel.Fk_ServiceProvider_CityId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
